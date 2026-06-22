@@ -1,5 +1,6 @@
 "use client";
 
+import NextImage from "next/image";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -132,10 +133,13 @@ export function ImageUpload({
           onClick={() => inputRef.current?.click()}
         >
           {preview ? (
-            <img
+            <NextImage
               src={preview}
               alt="Product"
+              width={96}
+              height={96}
               className="w-full h-full object-cover"
+              unoptimized
             />
           ) : (
             <>

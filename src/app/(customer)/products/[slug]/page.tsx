@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -28,15 +29,17 @@ export default async function ProductDetailPage({
         </Link>
 
         <div className="mt-8 grid gap-12 md:grid-cols-2">
-          <div className="aspect-square bg-surface-neutral flex items-center justify-center">
+          <div className="aspect-square bg-surface-neutral relative overflow-hidden">
             {product.images?.[0] ? (
-              <img
+              <Image
                 src={product.images[0]}
                 alt={product.name}
-                className="w-full h-full object-contain p-8"
+                fill
+                className="object-contain p-8"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             ) : (
-              <div className="h-3/4 w-3/4 bg-gradient-to-br from-accent-amber-light/20 to-accent-amber-deep/10 flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent-amber-light/20 to-accent-amber-deep/10 flex items-center justify-center">
                 <span className="font-serif text-6xl text-accent-gold/30">
                   &#x2736;
                 </span>

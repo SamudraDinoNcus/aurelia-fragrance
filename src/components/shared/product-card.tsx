@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface ProductCardProps {
@@ -21,15 +22,17 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`} className="group cursor-pointer">
-      <div className="product-image-container aspect-square bg-surface-neutral flex items-center justify-center p-12 mb-6 relative overflow-hidden">
+      <div className="product-image-container aspect-square bg-surface-neutral mb-6 relative overflow-hidden">
         {imageSrc ? (
-          <img
+          <Image
             src={imageSrc}
             alt={name}
-            className="w-full h-full object-contain"
+            fill
+            className="object-contain p-12"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-accent-amber-light/20 to-accent-amber-deep/10 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-accent-amber-light/20 to-accent-amber-deep/10 flex items-center justify-center">
             <span className="font-serif text-4xl text-accent-gold/40">&#x2736;</span>
           </div>
         )}

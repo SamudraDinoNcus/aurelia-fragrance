@@ -54,14 +54,6 @@
 
 /* ---- Style pendukung yang diporting dari template frontend-parfume ---- */
 
-.material-symbols-outlined {
-  font-variation-settings:
-    "FILL" 0,
-    "wght" 200,
-    "GRAD" 0,
-    "opsz" 24;
-}
-
 .custom-scroll {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--border)) transparent;

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/shared/product-card";
@@ -38,10 +39,12 @@ export default async function HomePage() {
       {/* ── Hero Section ── */}
       <section className="relative h-screen w-full flex items-end pb-24 overflow-hidden bg-[#1B130F]">
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             src="/images/hero-bg.jpg"
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-br from-accent-amber-deep/40 to-[#1B130F]/95" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />

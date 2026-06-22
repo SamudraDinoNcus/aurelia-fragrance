@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface PromoBannerProps {
@@ -28,10 +29,11 @@ export function PromoBanner({
         </Link>
       </div>
       <div className="md:col-span-3 relative h-full min-h-[400px] md:min-h-0">
-        <img
+        <Image
           src="/images/art-of-giving.jpg"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-[#1B130F]/40" />
       </div>
