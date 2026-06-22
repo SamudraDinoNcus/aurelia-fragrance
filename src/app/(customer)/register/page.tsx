@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
-import { createUser } from "@/lib/actions/auth";
+import { registerUser } from "@/lib/actions/auth";
 
 export default function RegisterPage() {
   const supabase = useMemo(() => createClient(), []);
@@ -23,7 +23,7 @@ export default function RegisterPage() {
       setError(null);
       setIsLoading(true);
 
-      const result = await createUser(email, password, fullName);
+      const result = await registerUser(email, password, fullName);
 
       if (result.error) {
         setError(result.error);
