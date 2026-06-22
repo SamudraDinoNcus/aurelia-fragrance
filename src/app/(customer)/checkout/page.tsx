@@ -7,6 +7,7 @@ import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/components/shared/auth-provider";
 import { Button } from "@/components/ui/button";
 import { createOrder } from "@/lib/actions/checkout";
+import { SimulatedSnapPopup } from "@/components/shared/simulated-snap-popup";
 
 declare global {
   interface Window {
@@ -27,9 +28,14 @@ declare global {
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
+
+  const handlePaid = useCallback(() => {
+    clearCart();
+  }, [clearCart]);
   const { user } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [snapOrder, setSnapOrder] = useState<{ id: string; total: number } | null>(null);
 
   const [address, setAddress] = useState({
     recipient_name: "",
@@ -88,8 +94,8 @@ export default function CheckoutPage() {
 
     const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
     if (!clientKey) {
-      router.push(`/order/${result.orderId}`);
       setIsLoading(false);
+      setSnapOrder({ id: result.orderId, total: result.totalAmount ?? 0 });
       return;
     }
 
@@ -144,6 +150,7 @@ export default function CheckoutPage() {
   }
 
   return (
+    <>
     <div className="bg-surface pt-28">
       <div className="mx-auto max-w-5xl px-container-margin-mobile pb-section-gap md:px-container-margin">
         <h1 className="font-headline-lg text-headline-lg text-on-background">
@@ -303,5 +310,15 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+
+      {snapOrder && (
+        <SimulatedSnapPopup
+          orderId={snapOrder.id}
+          totalAmount={snapOrder.total}
+          onPaid={handlePaid}
+          onClose={() => setSnapOrder(null)}
+        />
+      )}
+    </>
   );
 }

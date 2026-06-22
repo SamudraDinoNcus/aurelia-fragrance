@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getProductBySlug } from "@/lib/supabase/queries";
+import { AddToCartButton } from "@/components/shared/add-to-cart-button";
 
 export default async function ProductDetailPage({
   params,
@@ -129,9 +130,12 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="mt-8 flex gap-4">
-              <Button variant="default" size="lg" className="flex-1">
-                Add to cart
-              </Button>
+              <AddToCartButton
+                slug={product.slug}
+                name={product.name}
+                price={product.price}
+                tagline={product.description?.split(".")[0] ?? ""}
+              />
               <Button variant="outline" size="lg">
                 Add to wishlist
               </Button>
