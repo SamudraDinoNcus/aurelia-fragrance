@@ -23,9 +23,14 @@ export function Navbar() {
   const isHome = pathname === "/";
   const { user } = useAuth();
   const { totalItems } = useCart();
+  const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
@@ -88,7 +93,7 @@ export function Navbar() {
               className="relative scale-95 transition-transform duration-200 hover:scale-100"
             >
               <ShoppingBag className="h-5 w-5" />
-              {totalItems > 0 && (
+              {mounted && totalItems > 0 && (
                 <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-accent-gold text-[10px] font-bold text-primary">
                   {totalItems > 9 ? "9+" : totalItems}
                 </span>

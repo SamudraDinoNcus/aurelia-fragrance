@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { confirmUser } from "@/lib/actions/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -15,14 +16,13 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const handleRegister = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setError(null);
       setIsLoading(true);
 
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -36,7 +36,11 @@ export default function RegisterPage() {
         return;
       }
 
-      router.replace("/");
+      if (signUpData.user?.id) {
+        await confirmUser(signUpData.user.id);
+      }
+
+      router.replace("/login");
       router.refresh();
     },
     [email, password, fullName, router, supabase],
