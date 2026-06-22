@@ -3,47 +3,38 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { confirmUser } from "@/lib/actions/auth";
+import { createClient } from "@/lib/supabase/client";
+import { createUser } from "@/lib/actions/auth";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const handleRegister = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setError(null);
       setIsLoading(true);
 
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name: fullName },
-        },
-      });
+      const result = await createUser(email, password, fullName);
 
-      if (signUpError) {
-        setError(signUpError.message);
+      if (result.error) {
+        setError(result.error);
         setIsLoading(false);
         return;
-      }
-
-      if (signUpData.user?.id) {
-        await confirmUser(signUpData.user.id);
       }
 
       router.replace("/login");
       router.refresh();
     },
-    [email, password, fullName, router, supabase],
+    [email, password, fullName, router],
   );
 
   const handleGoogleLogin = useCallback(async () => {
